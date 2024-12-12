@@ -1,0 +1,41 @@
+- tactic: discovery
+  technique_name: Account Discovery
+  technique_id: T1087
+  name: INF808 - Account Discovery
+  description: Identify user and service accounts present on the system to facilitate
+    lateral movement and privilege escalation.
+  executors:
+  - name: sh
+    platform: linux
+    command: "|\n# Liste des comptes utilisateurs du syst\xE8me\necho \"[*] R\xE9\
+      cup\xE9ration des comptes utilisateurs\"\ncut -d: -f1 /etc/passwd > /tmp/user_accounts.txt\n\
+      \n# Liste des sessions utilisateur actives\necho \"[*] R\xE9cup\xE9ration des\
+      \ sessions utilisateur actives\"\nwho > /tmp/active_sessions.txt\nw > /tmp/active_sessions_w.txt\n\
+      \n# R\xE9cup\xE9ration des utilisateurs sudoers\necho \"[*] R\xE9cup\xE9ration\
+      \ des utilisateurs sudoers\"\ncat /etc/sudoers | grep -E '^[^#]' > /tmp/sudo_users.txt"
+    code: null
+    language: null
+    build_target: null
+    payloads: []
+    uploads: []
+    timeout: 60
+    parsers: []
+    cleanup:
+    - "echo \"[*] Nettoyage des fichiers de d\xE9couverte des comptes\""
+    - rm -f /tmp/user_accounts.txt
+    - rm -f /tmp/active_sessions.txt
+    - rm -f /tmp/active_sessions_w.txt
+    - rm -f /tmp/sudo_users.txt
+    variations: []
+    additional_info: {}
+  requirements: []
+  privilege: ''
+  repeatable: false
+  buckets:
+  - discovery
+  additional_info: {}
+  access: {}
+  singleton: false
+  plugin: atomic
+  delete_payload: true
+  id: 980d0b8af8d76503955afcd514157c84

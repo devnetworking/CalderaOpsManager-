@@ -1,0 +1,17 @@
+id: c724545d-a4cc-492e-8075-2ab9a699c847
+name: INF808 - Privilege Elevation Operator (PEO)
+description: Adversaire spécialisé dans l'obtention d'un accès initial à travers l'exploitation de vulnérabilités d'applications accessibles publiquement (T1190), suivi d'une escalade de privilèges pour obtenir un contrôle root complet sur les systèmes Linux (Ubuntu 20.04). Ce profil simule un attaquant capable de contourner les mécanismes de défense, d'abuser des configurations sudo et des failles d'applications web. Les techniques mises en œuvre suivent les tactiques d'accès initial (TA0001) et d'escalade de privilèges (TA0004) définies par le framework MITRE ATT&CK.
+objective: 
+atomic_ordering:
+- f1bd28014dc55d1849088a8e69a0b4ca
+- e2f36507e78a0d2d5de6c0ad939cd13c
+- 6edfb4431a2c7b2809ebf6d0a7a63bc5
+- 2b00667c131aba669860a710213bbb88
+- 682fd8ce0e7a672eb8851e9adb15cab0
+- 7c7e4225ee879f65e7970d211b5ba7b7
+- 980d0b8af8d76503955afcd514157c84
+- ae6002b8a17487caec6a5101ea9ce75e
+- e750a51d6ede95af4152a82ef5c41fbc
+- 9238ae711ad42fea9892671fef93783f
+- e9e546a870093e5feb8ff86419957ecd
+- b519caebcd1a075d73fb656a47fc9179
